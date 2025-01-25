@@ -27,7 +27,7 @@ CREATE TABLE "Category" (
 -- CreateTable
 CREATE TABLE "ExpenseCategoryMapping" (
     "id" SERIAL NOT NULL,
-    "expenseNames" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "categoryId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

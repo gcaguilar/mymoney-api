@@ -1,10 +1,18 @@
-import { Expense } from "@prisma/client";
 import prisma from "../utils/prisma";
 
 async function getExpenseById(id: number) {
   return await prisma.expense.findFirstOrThrow({
     where: {
       id: id,
+      userId: "1",
+    },
+    include: {
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
   });
 }
@@ -12,12 +20,17 @@ async function getExpenseById(id: number) {
 async function getExpenses(
   offset: number,
   latest: boolean
-): Promise<Expense[]> {
+) {
   const order = latest ? "desc" : "asc";
 
   return await prisma.expense.findMany({
     include: {
-      category: true,
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
     orderBy: {
       transactionDate: order,
@@ -32,8 +45,6 @@ async function addExpense(
   date: string,
   categoryId: number
 ) {
-  console.log("Name", name);
-
   const { id } = await prisma.expense.create({
     data: {
       userId: "1",
@@ -58,9 +69,9 @@ async function deleteExpense(id: number) {
 
 async function updateExpense(
   id: number,
-  expenseName: string,
+  title: string,
   money: number,
-  date: string,
+  transactionDate: string,
   categoryid: number
 ) {
   return await prisma.expense.update({
@@ -68,9 +79,9 @@ async function updateExpense(
       id: id,
     },
     data: {
-      name: expenseName,
+      name: title,
       amount: money,
-      transactionDate: date,
+      transactionDate: transactionDate,
       category: {
         connect: { id: categoryid },
       },

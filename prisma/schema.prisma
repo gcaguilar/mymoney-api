@@ -33,7 +33,7 @@ model Category {
 
 model ExpenseCategoryMapping {
   id           Int    @id @default(autoincrement())
-  expenseNames String
+  name String
   userId       String
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
